@@ -24,22 +24,26 @@ A professional Node.js service that receives GitHub webhook events and sends pus
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <your-repo-url>
 cd github-bot-notify
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file in the root directory:
+
 ```bash
 cp .env.example .env
 ```
 
 4. Configure your `.env` file:
+
 ```env
 BOT_TOKEN=your_telegram_bot_token_here
 CHAT_ID=your_telegram_chat_id_here
@@ -137,10 +141,12 @@ github-bot-notify/
 Receives GitHub webhook events. Requires valid GitHub signature.
 
 **Headers:**
+
 - `X-GitHub-Event`: Event type (e.g., "push", "ping")
 - `X-Hub-Signature-256`: HMAC SHA-256 signature
 
 **Response:**
+
 - `200 OK`: Webhook processed successfully
 - `401 Unauthorized`: Invalid or missing signature
 - `400 Bad Request`: Invalid payload structure
@@ -151,6 +157,7 @@ Receives GitHub webhook events. Requires valid GitHub signature.
 Health check endpoint.
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -186,6 +193,32 @@ The application includes comprehensive error handling:
 ## License
 
 ISC
+
+## Deployment
+
+### Free Hosting Options
+
+This project can be deployed to various free hosting platforms. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
+
+**Quick Recommendations:**
+
+- 🏆 **Railway** - Best overall, always-on, $5/month free credit
+- **Render** - Easy setup, sleeps after inactivity
+- **Fly.io** - Great performance, always-on
+- **Cyclic** - Simple, unlimited free tier
+
+### Quick Deploy to Railway
+
+1. Sign up at [railway.app](https://railway.app)
+2. New Project → Deploy from GitHub
+3. Select your repository
+4. Add environment variables (`BOT_TOKEN`, `CHAT_ID`, `GITHUB_SECRET`)
+5. **Get your Railway URL:**
+   - In Railway dashboard → Your Service → **Settings** → **Networking**
+   - Copy the **Public Domain** (e.g., `https://your-app.up.railway.app`)
+6. Update GitHub webhook URL to: `https://your-app.up.railway.app/github/webhook`
+
+For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
 ## Support
 
