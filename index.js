@@ -6,22 +6,49 @@ const axios = require("axios");
 const app = express();
 app.use(express.json());
 
+// Logging middleware to see all incoming requests
+app.use((req, res, next) => {
+  console.log("\n=== Incoming Request ===");
+  console.log(`Method: ${req.method}`);
+  console.log(`URL: ${req.url}`);
+  console.log(`Headers:`, JSON.stringify(req.headers, null, 2));
+  console.log(`Body:`, JSON.stringify(req.body, null, 2));
+  console.log("=======================\n");
+  next();
+});
+
 const PORT = 3000;
 
 function verifyGitHubSignature(req, res, next) {
   const signature = req.headers["x-hub-signature-256"];
+
+  console.log("🔐 Signature Verification:");
+  console.log(`  Received signature: ${signature || "MISSING"}`);
+  console.log(`  GITHUB_SECRET exists: ${!!process.env.GITHUB_SECRET}`);
+
   if (!signature) {
+    console.warn("❌ Received request without x-hub-signature-256 header");
     return res.status(401).send("No signature provided");
+  }
+
+  if (!process.env.GITHUB_SECRET) {
+    console.error("❌ GITHUB_SECRET is not defined in .env file");
+    return res.status(500).send("Server configuration error");
   }
 
   const hmac = crypto.createHmac("sha256", process.env.GITHUB_SECRET);
   const digest =
     "sha256=" + hmac.update(JSON.stringify(req.body)).digest("hex");
 
+  console.log(`  Calculated digest: ${digest}`);
+  console.log(`  Match: ${signature === digest ? "✅ YES" : "❌ NO"}`);
+
   if (signature !== digest) {
+    console.error("❌ Invalid signature - request rejected");
     return res.status(401).send("Invalid signature");
   }
 
+  console.log("✅ Signature verified successfully");
   next();
 }
 
@@ -62,13 +89,13 @@ const githubWebhookHandler = (req, res) => {
   const commits = payload.commits.map((c) => `- ${c.message}`).join("\n");
 
   const message = `
-🚀 *New Push Detected*
-📦 Repo: ${repo}
-🌿 Branch: ${branch}
-👤 Pusher: ${pusher}
+    🚀 *New Push Detected*
+    📦 Repo: ${repo}
+    🌿 Branch: ${branch}
+    👤 Pusher: ${pusher}
 
-📝 Commits:
-${commits}
+    📝 Commits:
+    ${commits}
   `;
 
   sendTelegramMessage(message);
