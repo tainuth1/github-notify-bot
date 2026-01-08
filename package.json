@@ -1,15 +1,26 @@
 {
   "name": "github-bot-notify",
   "version": "1.0.0",
-  "description": "",
+  "description": "A professional GitHub webhook service that sends push notifications to Telegram",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "github",
+    "webhook",
+    "telegram",
+    "notifications",
+    "bot"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "dependencies": {
     "axios": "^1.13.2",
     "crypto": "^1.0.1",
