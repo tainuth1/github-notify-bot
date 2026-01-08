@@ -67,7 +67,7 @@ const githubWebhookHandler = (req, res) => {
   const repo = payload.repository.name;
   const branch = payload.ref.split("/").pop();
   const pusher = payload.pusher.name;
-  const commits = payload.commits.map((c) => `- ${c.message}`).join("\n");
+  const commits = payload.commits.map((c) => `- ${c.message}`).join("\n");  
 
   const message = `
 🚀 *New Push Detected*
