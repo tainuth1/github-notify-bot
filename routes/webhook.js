@@ -5,7 +5,7 @@
 const express = require("express");
 const router = express.Router();
 const { verifyGitHubSignature } = require("../middleware/githubAuth");
-const { handleGitHubWebhook } = require("../services/githubWebhookService");
+const { handleGitHubWebhook } = require("../services/githubWebhookService"); 
 
 /**
  * POST /github/webhook
